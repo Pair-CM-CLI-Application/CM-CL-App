@@ -27,9 +27,9 @@ import java.util.List;
 
 	class PersonInfo {
 		protected String name;
-		protected Long number;
+		protected int number;
 
-		public PersonInfo(String name, Long aNumber) {
+		public PersonInfo(String name, int aNumber) {
 			this.name = name;
 			this.number = aNumber;
 		}
