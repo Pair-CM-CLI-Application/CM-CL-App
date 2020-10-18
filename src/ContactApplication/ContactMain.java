@@ -1,25 +1,17 @@
 package ContactApplication;
 
+import java.io.IOException;
+
 public class ContactMain {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		System.out.println(" ______     __     ______     ______   __  __     ______     __   __     ______    \n" +
+						"/\\  == \\   /\\ \\   /\\  __ \\   /\\  == \\ /\\ \\_\\ \\   /\\  __ \\   /\\ \"-.\\ \\   /\\  ___\\   \n" +
+						"\\ \\  __<   \\ \\ \\  \\ \\ \\/\\ \\  \\ \\  _-/ \\ \\  __ \\  \\ \\ \\/\\ \\  \\ \\ \\-.  \\  \\ \\  __\\   \n" +
+						" \\ \\_____\\  \\ \\_\\  \\ \\_____\\  \\ \\_\\    \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\\\\"\\_\\  \\ \\_____\\ \n" +
+						"  \\/_____/   \\/_/   \\/_____/   \\/_/     \\/_/\\/_/   \\/_____/   \\/_/ \\/_/   \\/_____/ \n" +
+						"                                                                                  ");
 		ContactApp.mainCLI();
-		ContactApp.nameList();
-//
-//		String directoryName = "ContactList";
-//		String fileName = "contactList.txt";
-//
-//		Path dataFilePath = ContactApp.createDirectoryAndFile(directoryName, fileName);
 	}
 }
-
-//		System.out.println("Enter a name");
-//		String name = sc.nextLine();
-//
-//		PersonInfo person = new PersonInfo(name, 46234);
-//
-//		List<String> list = new ArrayList<>();
-//		list.add(name);
-//
-//		Files.write(dataFilePath,list);
 
 
