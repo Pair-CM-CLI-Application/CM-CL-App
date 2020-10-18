@@ -1,7 +1,11 @@
 package ContactApplication;
 
-//import util.Input;
+import util.Input;
 
+import util.Input;
+
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import java.io.IOException;
@@ -11,30 +15,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-	class ContactApp {
-		public static Path createDirectoryAndFile(String directoryName, String fileName) throws IOException {
+class ContactApp {
 
-			Path directoryPath = Paths.get(directoryName);
-			Path dataFilePath = Paths.get(directoryName, fileName);
-
-			if (Files.notExists(directoryPath)) {
-				Files.createDirectories(directoryPath);
-			}
-
-			if (!Files.exists(dataFilePath)) {
-				Files.createFile(dataFilePath);
-			}
-
-			return dataFilePath;
-		}
-
-
-		//================== Main CLI==================
-		//Todo: psv mainMenu {}
-		public static void mainCLI() {
-//			Input input = new Input();
+	//================== Main CLI==================
+	public static void mainCLI() throws IOException {
 			Scanner sc = new Scanner(System.in);
-
+			Input input = new Input();
 
 			System.out.println("1. Create contact list.");
 			System.out.println("2. View contacts.");
@@ -48,11 +34,12 @@ import java.util.List;
 			switch (userInput) {
 				case 1:
 					System.out.println("1. Create contact list.");
-//					ContactApp.printFileContents(dataFilePath);
+					createDirectoryAndFile();
+					mainCLI();
 					break;
 				case 2:
 					System.out.println("2. View contacts.");
-					//ContactApp.printFileContents(dataFilePath);
+//					printFileContents(dataFilePath);
 					break;
 				case 3:
 					System.out.println("3. Add a new contact.");
@@ -65,22 +52,53 @@ import java.util.List;
 					break;
 				case 6:
 					System.out.println("6. Exit.");
+					input.yesNo("Are You sure you want to quit?(Y/N)");
 					break;
 				default:
 					System.out.println("Invalid! Enter an option (1, 2, 3, 4 or 5):");
 			}
+	}
+
+	//================== File Creation Method==================
+	public static void createDirectoryAndFile() throws IOException {
+		Input input = new Input();
+		String directoryName = "ContactList";
+		String fileName = input.getString("Enter the phone book name");
+
+		System.out.println("Folder Name = " + directoryName);
+		System.out.println("File Name = " + fileName);
+
+		try {
+			Path dataFilePath = createDirectoryAndFile(directoryName, fileName);
+			printFileContents(dataFilePath);
+		} catch (IOException ex) {
+			System.out.println("Cannot create the file.");
+			ex.printStackTrace();
 		}
+	}
 
+	public static Path createDirectoryAndFile(String directoryName, String fileName) throws IOException {
+			Path directoryPath = Paths.get(directoryName);
+			Path dataFilePath = Paths.get(directoryName, fileName);
+			//We have to create a directory first before we create before we create the file.
+			if (Files.notExists(directoryPath)) {
+				Files.createDirectories(directoryPath);
+			}
+			if (!Files.exists(dataFilePath)) {
+				Files.createFile(dataFilePath);
+			}
+			return dataFilePath;/*Todo:Return dataFilePath(Global Scale)*/
+		}
+	//================== File Manipulation Methods==================
 
-		//================== File Manipulation Methods==================
-
-//		public static void printFileContents(Path filePath) throws IOException {
-//			System.out.println();
-//			List<String> fileContents = Files.readAllLines(filePath);
-//			for (int i = 0; i < fileContents.size(); i++) {
-//				System.out.printf("%s\n", fileContents.get(i));
-//			}
-//		}
+	public static void printFileContents(Path filePath) throws IOException {
+		System.out.println();
+		List<String> fileContents = Files.readAllLines(filePath);
+		for (int i = 0; i < fileContents.size(); i++) {
+			System.out.printf("%s\n", fileContents.get(i));
+		}
+		mainCLI();/*Todo:Refactor to return user to mainCLI()*/
+	}
 
 //	class PersonInfo {
 //		protected String name;
@@ -136,4 +154,4 @@ import java.util.List;
 
 //		System.out.println("Hello World!");
  */
-	}
+}
