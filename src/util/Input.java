@@ -98,7 +98,6 @@ public class Input {
     return aDouble;
   }
 
-
 //  public static void getBinary() {
 //    Input input = new Input();
 //    try {
