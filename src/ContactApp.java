@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -38,7 +37,7 @@ public class ContactApp {
 					break;
 				case 2:
 					System.out.println("2. Add a new contact.");
-					createContact();
+					PersonInfo person = new PersonInfo(input, false);
 					break;
 				case 3:
 					System.out.println("3. Search a contact by name.");
@@ -106,6 +105,7 @@ public class ContactApp {
 	}
 
 
+
 	//================== File Manipulation Methods==================
 	public static void printFileContents(Path filePath) throws IOException {
 		System.out.println();
@@ -126,7 +126,6 @@ public class ContactApp {
 		String updateContact = (person.name + "  |  " + person.number);
 		return updateContact;
 	}
-
 
 	public static void updateLine() throws IOException {
 		Input input = new Input();
@@ -162,7 +161,7 @@ public class ContactApp {
 		List<String> fileContents = Files.readAllLines(filePath);
 		List<String> modifiedList = new ArrayList<>();
 		for (String item: fileContents) {
-			if (!item.contains(line)) { //Todo: .contains is to easily manipulated
+			if (!item.equalsIgnoreCase(line)) {
 				modifiedList.add(item);
 			}
 		}

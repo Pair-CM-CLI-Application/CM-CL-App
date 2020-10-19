@@ -1,5 +1,6 @@
 import util.Input;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +15,7 @@ public class PersonInfo {
 
 
 	public PersonInfo(Input input, Boolean replace) throws IOException {
+
 		this.name = input.getString("Name: ");
 		this.number = input.getString("number: ");
 //		//Todo:Bonus adding hash
@@ -26,13 +28,32 @@ public class PersonInfo {
 //		}
 //
 //		//Todo:Check for already existing contact
-//		ContactApp.searchForContact();
+////		ContactApp.searchForContact();
+
+
+		Path filePath = Paths.get("ContactList", "ContactList.txt");
+		List<String> fileContents = Files.readAllLines(filePath);
+
 
 		List<String> list = new ArrayList<>();
 		list.add(name + "  |  " + number);
-		Path dataFilePath = Paths.get("ContactList", "ContactList.txt");
-		if (!replace){
-			Files.write(dataFilePath,list, StandardOpenOption.APPEND);
+
+		Files.write(filePath, list, StandardOpenOption.APPEND);
+
+		for (int i = 0; i < fileContents.size(); i++) {
+			List<String> newList = new ArrayList<>();
+			for (String item : fileContents) {
+				newList.add((i + 1) + ": " + item); //replaces thing 3
+				Files.write(filePath, newList, StandardOpenOption.APPEND); //puts new list back
+			}
 		}
+		if (!replace) {
+			Files.write(filePath, list, StandardOpenOption.APPEND);
+		}
+	}
+
+
+	personCreate() {
+
 	}
 }
