@@ -1,19 +1,17 @@
-package ContactApplication;
-
+//Imports
 import util.Input;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-class ContactApp {
 
+
+public class ContactApp {
 	//================== Main CLI==================
 	public static void mainCLI() throws IOException {
 		Input input = new Input();
@@ -25,8 +23,9 @@ class ContactApp {
 		System.out.println("2. Add a new contact.");
 		System.out.println("3. Search a contact by name.");
 		System.out.println("4. Delete an existing contact.");
-		System.out.println("5. List options.");
-		System.out.println("6. Exit.");
+		System.out.println("5. Update an Existing Contact.");
+		System.out.println("6. List options.");
+		System.out.println("7. Exit.");
 
 		createDirectoryAndFile();
 		while (true) {
@@ -35,27 +34,30 @@ class ContactApp {
 			switch (userInput) {
 				case 1:
 					System.out.println("1. View contacts.");
-//					printFileContents(dataFilePath);
+					printFileContents(dataFilePath);
 					break;
 				case 2:
 					System.out.println("2. Add a new contact.");
-					boolean replace = false;
-					PersonInfo person = new PersonInfo(input, replace);
+					createContact();
 					break;
 				case 3:
 					System.out.println("3. Search a contact by name.");
+					//searchForContact();
 					break;
 				case 4:
 					System.out.println("4. Delete an existing contact.");
-//					deleteLine(dataFilePath);
+					deleteLine();
 					break;
 				case 5:
-					System.out.println("5. List Options.");
-					//testing update
+					System.out.println("5. Update an Existing Contact.");
 					updateLine();
 					break;
 				case 6:
-					System.out.println("6. Exit.");
+					System.out.println("6. List Options.");
+					mainCLI();
+					break;
+				case 7:
+					System.out.println("7. Exit.");
 					boolean quit = input.yesNo("Are You sure you want to quit?(Y/N)");
 					if (quit) {
 						System.out.println("Program ending");
@@ -106,8 +108,6 @@ class ContactApp {
 
 	//================== File Manipulation Methods==================
 	public static void printFileContents(Path filePath) throws IOException {
-
-		Path dataFilePath = Paths.get("ContactList", "ContactList.txt");
 		System.out.println();
 		List<String> fileContents = Files.readAllLines(filePath);
 		for (int i = 0; i < fileContents.size(); i++) {
@@ -115,64 +115,71 @@ class ContactApp {
 		}
 	}
 
-
-	public static void updateLine() throws IOException {
+	//Todo:Broke only for add
+	public static String createContact() throws IOException {
 		Input input = new Input();
-		//Replace a line in the file.
-		String oldValue = input.getString("Who do you want to delete?");
-
-//		PersonInfo person = new PersonInfo(input);
-		System.out.println("What would you like to change it to?");
-		String newValue = createContact(input);
-
-
-		Path filePath = Paths.get("ContactList", "ContactList.txt");
-
-		List<String> fileContents = Files.readAllLines(filePath); //reads all
-		for (int i = 0; i < fileContents.size(); i++) {
-			List<String> newList = new ArrayList<>();
-			for (String item : fileContents) {
-				if (item.contains(oldValue)) {
-					newList.add(newValue);    // adds all items that aren't bread
-				} else {
-					newList.add(item);
-				}
-				Files.write(filePath, newList);
-				fileContents = Files.readAllLines(filePath);
-//				for (int e = 0; e < fileContents.size(); e++) {//prints file contents
-//					System.out.printf("%d: %s\n", e + 1, fileContents.get(e));
-			}
-		}
-	}
-
-
-	public static String createContact(Input input) throws IOException {
 		PersonInfo person = new PersonInfo(input, true);
-//		person.name = input.getString("Name: ");
-//		person.number = input.getString("number: ");
+
 		List<String> list = new ArrayList<>();
 		list.add(person.name + "  |  " + person.number);
-//		Path dataFilePath = Paths.get("ContactList", "ContactList.txt");
-//		Files.write(dataFilePath, list, StandardOpenOption.APPEND);
 
 		String updateContact = (person.name + "  |  " + person.number);
 		return updateContact;
 	}
 
 
+	public static void updateLine() throws IOException {
+		Input input = new Input();
+		Path filePath = Paths.get("ContactList", "ContactList.txt");
+
+		String oldValue = input.getString("Who do you want to delete?");
+		System.out.println("What would you like to change it to?");
+		String newValue = createContact();
+
+		List<String> fileContents = Files.readAllLines(filePath);
+		for (int i = 0; i < fileContents.size(); i++) {
+			List<String> newList = new ArrayList<>();
+			for (String item : fileContents) {
+				if (item.contains(oldValue)) {
+					newList.add(newValue);
+				} else {
+					newList.add(item);
+				}
+				Files.write(filePath, newList);
+				fileContents = Files.readAllLines(filePath);
+			}
+		}
+	}
 
 
-	public static void deleteLine(Path filePath, String line) throws IOException {
+	public static void deleteLine() throws IOException {
+		Input input = new Input();
+		Path filePath = Paths.get("ContactList", "ContactList.txt");
+
+		System.out.println("Who do you want to delete?");
+		String line = input.getString("Name: ");
+
 		List<String> fileContents = Files.readAllLines(filePath);
 		List<String> modifiedList = new ArrayList<>();
 		for (String item: fileContents) {
-			//I want to remove the bread from the list.
-			if(!item.equals(line)) {
+			if (!item.contains(line)) { //Todo: .contains is to easily manipulated
 				modifiedList.add(item);
 			}
 		}
 		Files.write(filePath, modifiedList);
 	}
+
+
+
+//	public static void searchForContact() throws IOException {
+//		Input input = new Input();
+//		seachName = input.getString("Name: ");
+//		for (String element : list) {
+//			if (element.contains(seachName)) {
+//				System.out.println(element);
+//			}
+//		}
+//	}
 
 	public static void bioPhone() {
 		System.out.println(" ______     __     ______     ______   __  __     ______     __   __     ______    \n" +
