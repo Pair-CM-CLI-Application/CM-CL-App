@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +18,7 @@ class ContactApp {
 	public static void mainCLI() throws IOException {
 		Input input = new Input();
 		Scanner sc = new Scanner(System.in);
+		Path dataFilePath = Paths.get("ContactList", "ContactList.txt");
 
 
 		System.out.println("1. View contacts.");
@@ -37,17 +39,20 @@ class ContactApp {
 					break;
 				case 2:
 					System.out.println("2. Add a new contact.");
-					PersonInfo person = new PersonInfo(input);
+					boolean replace = false;
+					PersonInfo person = new PersonInfo(input, replace);
 					break;
 				case 3:
 					System.out.println("3. Search a contact by name.");
 					break;
 				case 4:
 					System.out.println("4. Delete an existing contact.");
-					deleteLine(dataFilePath);
+//					deleteLine(dataFilePath);
 					break;
 				case 5:
 					System.out.println("5. List Options.");
+					//testing update
+					updateLine();
 					break;
 				case 6:
 					System.out.println("6. Exit.");
@@ -65,7 +70,6 @@ class ContactApp {
 			}
 		}
 	}
-
 
 
 	//================== File Creation Method==================
@@ -100,9 +104,6 @@ class ContactApp {
 	}
 
 
-
-
-
 	//================== File Manipulation Methods==================
 	public static void printFileContents(Path filePath) throws IOException {
 
@@ -115,27 +116,47 @@ class ContactApp {
 	}
 
 
-	public static List<String> updateLine() throws IOException {
+	public static void updateLine() throws IOException {
 		Input input = new Input();
 		//Replace a line in the file.
 		String oldValue = input.getString("Who do you want to delete?");
 
+//		PersonInfo person = new PersonInfo(input);
+		System.out.println("What would you like to change it to?");
+		String newValue = createContact(input);
+
+
 		Path filePath = Paths.get("ContactList", "ContactList.txt");
 
 		List<String> fileContents = Files.readAllLines(filePath); //reads all
-		for (int i = 0; i < fileContents.size(); i++){
+		for (int i = 0; i < fileContents.size(); i++) {
 			List<String> newList = new ArrayList<>();
-			for(String item: fileContents){
-				if (!item.equals(oldValue) {
-					newList.add(item);    // adds all items that aren't bread
+			for (String item : fileContents) {
+				if (item.contains(oldValue)) {
+					newList.add(newValue);    // adds all items that aren't bread
+				} else {
+					newList.add(item);
 				}
 				Files.write(filePath, newList);
 				fileContents = Files.readAllLines(filePath);
-				for (int i = 0; i < fileContents.size(); i++) {//prints file contents
-					System.out.printf("%d: %s\n", i + 1, fileContents.get(i));
-				}
+//				for (int e = 0; e < fileContents.size(); e++) {//prints file contents
+//					System.out.printf("%d: %s\n", e + 1, fileContents.get(e));
 			}
 		}
+	}
+
+
+	public static String createContact(Input input) throws IOException {
+		PersonInfo person = new PersonInfo(input, true);
+//		person.name = input.getString("Name: ");
+//		person.number = input.getString("number: ");
+		List<String> list = new ArrayList<>();
+		list.add(person.name + "  |  " + person.number);
+//		Path dataFilePath = Paths.get("ContactList", "ContactList.txt");
+//		Files.write(dataFilePath, list, StandardOpenOption.APPEND);
+
+		String updateContact = (person.name + "  |  " + person.number);
+		return updateContact;
 	}
 
 

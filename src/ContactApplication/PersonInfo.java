@@ -14,12 +14,15 @@ public class PersonInfo {
 	protected String name;
 	protected String number;
 
-	public PersonInfo(Input input) throws IOException {
+
+	public PersonInfo(Input input, Boolean replace) throws IOException {
 		this.name = input.getString("Name: ");
 		this.number = input.getString("number: ");
 		List<String> list = new ArrayList<>();
 		list.add(name + "  |  " + number);
 		Path dataFilePath = Paths.get("ContactList", "ContactList.txt");
-		Files.write(dataFilePath,list, StandardOpenOption.APPEND);
+		if (!replace){
+			Files.write(dataFilePath,list, StandardOpenOption.APPEND);
+		}
 	}
 }
