@@ -35,25 +35,25 @@ public class PersonInfo {
 		List<String> fileContents = Files.readAllLines(filePath);
 
 
-		List<String> list = new ArrayList<>();
-		list.add(name + "  |  " + number);
+//		List<String> list = new ArrayList<>();
+//		list.add(name + "  |  " + number);
+		String contact = (name + "  |  " + number);
+//		Files.write(filePath, list, StandardOpenOption.APPEND);
 
-		Files.write(filePath, list, StandardOpenOption.APPEND);
 
-		for (int i = 0; i < fileContents.size(); i++) {
-			List<String> newList = new ArrayList<>();
+		for (int i = 1; i <= fileContents.size(); i++) {
+			List<String> list = new ArrayList<>();
 			for (String item : fileContents) {
-				newList.add((i + 1) + ": " + item); //replaces thing 3
-				Files.write(filePath, newList, StandardOpenOption.APPEND); //puts new list back
+				if (i == fileContents.size()) {
+					int e = i;
+					list.add((++e) + ": " + contact); //replaces thing 3
+					Files.write(filePath, list, StandardOpenOption.APPEND); //puts new list back
+				}
+				if (!replace) {
+					Files.write(filePath, list, StandardOpenOption.APPEND);
+				}
 			}
 		}
-		if (!replace) {
-			Files.write(filePath, list, StandardOpenOption.APPEND);
-		}
-	}
-
-
-	personCreate() {
-
 	}
 }
+//	personCreate()
