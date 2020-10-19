@@ -18,12 +18,15 @@ public class PersonInfo {
 
 		this.name = input.getString("Name: ");
 		this.number = input.getString("number: ");
-//		//Todo:Bonus adding hash
+		//Todo:Bonus adding hash
 //		if (this.number.length() == 7) {
-//			//7 digit phone number format
+//			String sub1 = number.substring(0, 3);
+//			String sub2 = number.substring(3);
+//			System.out.println(sub1 + "-" + sub2);
+//
 //		} else if (this.number.length() == 10) {
 //			//10 digit phone number format
-//		}  else {
+//		} else {
 //			//invalid phone number length
 //		}
 //
@@ -41,19 +44,36 @@ public class PersonInfo {
 //		Files.write(filePath, list, StandardOpenOption.APPEND);
 
 
-		for (int i = 1; i <= fileContents.size(); i++) {
-			List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
+		for (int i = -1; i < fileContents.size(); i++) {
 			for (String item : fileContents) {
-				if (i == fileContents.size()) {
-					int e = i;
-					list.add((++e) + ": " + contact); //replaces thing 3
-					Files.write(filePath, list, StandardOpenOption.APPEND); //puts new list back
+				int last = i - 1;
+				if (last == fileContents.size()) {
+					list.add((i) + ": " + contact);
+				} else {
+					list.add(item);
 				}
-				if (!replace) {
-					Files.write(filePath, list, StandardOpenOption.APPEND);
-				}
+				Files.write(filePath, list);
+			}
+			if (!replace) {
+				Files.write(filePath, list, StandardOpenOption.APPEND);
 			}
 		}
 	}
 }
+
+
+
+
+
+//		List<String> list = new ArrayList<>();
+//			for (String item : fileContents) {
+//				if (i-1 == fileContents.size()) {
+//					int e = i;
+//					list.add((++e) + ": " + contact);
+//					Files.write(filePath, list, StandardOpenOption.APPEND); //puts new list back
+//				}
+//				if (!replace) {
+//					Files.write(filePath, list, StandardOpenOption.APPEND);
+//				}
 //	personCreate()
